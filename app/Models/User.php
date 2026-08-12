@@ -57,7 +57,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(Expense::class);
     }
-
+ 
     public function stockMovements(): HasMany
     {
         return $this->hasMany(StockMovement::class);
