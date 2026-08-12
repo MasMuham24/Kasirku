@@ -27,7 +27,13 @@ class TransactionController extends Controller
     {
         $customers = Customer::orderBy('name')->get();
         $products = Product::orderBy('name')->get();
-        return view('transactions.create', compact('customers', 'products'));
+        $productsData = $products->map(fn ($p) => [
+            'id' => $p->id,
+            'name' => $p->name,
+            'code' => $p->code,
+            'price' => (float) $p->selling_price,
+        ]);
+        return view('transactions.create', compact('customers', 'products', 'productsData'));
     }
 
     /**

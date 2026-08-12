@@ -33,12 +33,16 @@ class ProductController extends Controller
     {
         $validated = $request->validate([
             'category_id' => 'required|exists:categories,id',
+            'code' => 'required|string|max:255|unique:products,code',
             'name' => 'required|string|max:255',
-            'sku' => 'required|string|max:100|unique:products,sku',
             'description' => 'nullable|string',
-            'price' => 'required|numeric|min:0',
+            'purchase_price' => 'required|numeric|min:0',
+            'selling_price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
+            'minimum_stock' => 'nullable|integer|min:0',
+            'unit' => 'nullable|string|max:50',
         ]);
+        $validated['is_active'] = $request->boolean('is_active');
         Product::create($validated);
         return redirect()->route('products.index')->with('success', 'Product berhasil ditambahkan.');
     }
@@ -68,12 +72,16 @@ class ProductController extends Controller
     {
         $validated = $request->validate([
             'category_id' => 'required|exists:categories,id',
+            'code' => 'required|string|max:255|unique:products,code,'.$product->id,
             'name' => 'required|string|max:255',
-            'sku' => 'required|string|max:100|unique:products,sku,'.$product->id,
             'description' => 'nullable|string',
-            'price' => 'required|numeric|min:0',
+            'purchase_price' => 'required|numeric|min:0',
+            'selling_price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
+            'minimum_stock' => 'nullable|integer|min:0',
+            'unit' => 'nullable|string|max:50',
         ]);
+        $validated['is_active'] = $request->boolean('is_active');
         $product->update($validated);
         return redirect()->route('products.index')->with('success', 'Product berhasil diperbarui.');
     }
